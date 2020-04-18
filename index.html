@@ -1,55 +1,57 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Test</title>
-    <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 
-    <script type="text/javascript" src="https://cs.nyu.edu/~kapp/cs101/processing_on_the_web/processing.js"></script>
-    <script src="https://raw.githubusercontent.com/shivaPeri/Navtiles-Webapp/master/js/three.min.js"></script>
-    <script src="https://raw.githubusercontent.com/shivaPeri/Navtiles-Webapp/master/js/OrbitControls.js"></script>
+<head>
+  <meta charset="utf-8">
+  <title>Test</title>
+  <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 
+  <script type="text/javascript" src="https://cs.nyu.edu/~kapp/cs101/processing_on_the_web/processing.js"></script>
+  <script src="./js/three.min.js"></script>
+  <script src="./js/OrbitControls.js"></script>
 
-    <style type="text/css">
-			#processing-canvas {
-				width: 800px;
-				height: 400px;
-				border: 5px solid black;
-			}
-		</style>
+  <style type="text/css">
+    #processing-canvas {
+      width: 800px;
+      height: 400px;
+      border: 5px solid black;
+    }
+  </style>
 
-  </head>
-  <body>
-    <h1> Navtiles Design Webapp </h1>
-    <h4> Tile type </h4>
-    <label for="buttons">Select a button:</label>
-    <select id="buttons">
-      <option value="bump">Bump</option>
-      <option value="bars">Bars</option>
-      <option value="arrow_1">Arrow 1</option>
-      <option value="arrow_2">Arrow 2</option>
-      <option value="question">Question</option>
-    </select>
+</head>
 
-    <!-- insert default image here  -->
-    <br>
-	  <div class="row">
-		  <div class="column">
-    <img src="https://firebasestorage.googleapis.com/v0/b/navtiles-bccb4.appspot.com/o/default_floorpan.jpeg?alt=media&token=6c871212-b3da-4859-bbb9-14e4abcc2913"
-    alt="default floor plan" width = 500>
+<body>
+  <h1> Navtiles Design Webapp </h1>
+  <h4> Tile type </h4>
+  <label for="buttons">Select a button:</label>
+  <select id="buttons">
+    <option value="bump">Bump</option>
+    <option value="bars">Bars</option>
+    <option value="arrow_1">Arrow 1</option>
+    <option value="arrow_2">Arrow 2</option>
+    <option value="question">Question</option>
+  </select>
 
-    <br>
+  <!-- insert default image here  -->
+  <br>
+  <div class="row">
+    <div class="column">
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/navtiles-bccb4.appspot.com/o/default_floorpan.jpeg?alt=media&token=6c871212-b3da-4859-bbb9-14e4abcc2913"
+        alt="default floor plan" width=500>
+      <br>
 
-    <button id="myBtn">Try it</button>
-    <script>
-    document.getElementById("myBtn").addEventListener("click", function(){
-      keyPressed(event);
-    });
-    </script>
+      <button id="myBtn">Try it</button>
+      <script>
+        document.getElementById("myBtn").addEventListener("click", function () {
+          keyPressed(event);
+        });
+      </script>
 
-    <script type="text/processing" data-processing-target="processing-canvas">
+      <script type="application/processing" data-processing-target="processing-canvas">
     int[][] grid;
     int rows;
     int cols;
@@ -143,115 +145,116 @@
     }
 
   		</script>
-	  </div>
-	<div class="column">
+    </div>
+    <div class="column">
       <div class="container">
         <div class="row">
           <div class="col">
-            <canvas id="processing-canvas" width ="200" height="100"> </canvas>
+            <canvas id="processing-canvas" width="200" height="100"> </canvas>
           </div>
           <div class="col">
             <canvas id="myCanvas" width="200" height="100"></canvas>
           </div>
         </div>
       </div>
-	  
-	  </div>
-	</div>
 
-      <script>
+    </div>
+  </div>
 
-        // Set up the scene, camera, and renderer as global variables.
-        var scene, camera, renderer;
+  <script>
 
-        init();
-        animate();
+    // Set up the scene, camera, and renderer as global variables.
+    var scene, camera, renderer;
 
-        // Sets up the scene.
-        function init() {
+    init();
+    animate();
 
-          // Create the scene and set the scene size.
-          scene = new THREE.Scene();
-          var WIDTH = window.innerWidth,
-              HEIGHT = window.innerHeight;
+    // Sets up the scene.
+    function init() {
 
-          // Create a renderer and add it to the DOM.
-          renderer = new THREE.WebGLRenderer({antialias: true});
-          //renderer.setSize(WIDTH, HEIGHT);
-          renderer.setSize(200, 100);
-          //container = document.getElementById('container');
-          //renderer.setSize($(container).width(), $(container).height());
-          //container.appendChild(renderer.domElement);
-          document.body.appendChild(renderer.domElement);
+      // Create the scene and set the scene size.
+      scene = new THREE.Scene();
+      var WIDTH = window.innerWidth,
+        HEIGHT = window.innerHeight;
 
-          // Create a camera, zoom it out from the model a bit, and add it to the scene.
-          camera = new THREE.PerspectiveCamera(45, 2, 0.1, 20000);
-          camera.position.set(0,6,0);
-          scene.add(camera);
+      // Create a renderer and add it to the DOM.
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      //renderer.setSize(WIDTH, HEIGHT);
+      renderer.setSize(200, 100);
+      //container = document.getElementById('container');
+      //renderer.setSize($(container).width(), $(container).height());
+      //container.appendChild(renderer.domElement);
+      document.body.appendChild(renderer.domElement);
 
-          // Create an event listener that resizes the renderer with the browser window.
-          window.addEventListener('resize', function() {
-            var WIDTH = window.innerWidth,
-                HEIGHT = window.innerHeight;
-            renderer.setSize(WIDTH, HEIGHT);
-            camera.aspect = WIDTH / HEIGHT;
-            camera.updateProjectionMatrix();
-          });
+      // Create a camera, zoom it out from the model a bit, and add it to the scene.
+      camera = new THREE.PerspectiveCamera(45, 2, 0.1, 20000);
+      camera.position.set(0, 6, 0);
+      scene.add(camera);
 
-          // Set the background color of the scene.
-          renderer.setClearColorHex(0x333F47, 1);
+      // Create an event listener that resizes the renderer with the browser window.
+      window.addEventListener('resize', function () {
+        var WIDTH = window.innerWidth,
+          HEIGHT = window.innerHeight;
+        renderer.setSize(WIDTH, HEIGHT);
+        camera.aspect = WIDTH / HEIGHT;
+        camera.updateProjectionMatrix();
+      });
 
-          // Create a light, set its position, and add it to the scene.
-          var light = new THREE.PointLight(0xffffff);
-          light.position.set(-100,200,100);
-          scene.add(light);
+      // Set the background color of the scene.
+      renderer.setClearColorHex(0x333F47, 1);
 
-          // Load in the mesh and add it to the scene.
-          var loader = new THREE.JSONLoader();
-          loader.load( "models/treehouse_logo.js", function(geometry){
-            var material = new THREE.MeshLambertMaterial({color: 0x55B663});
-            mesh = new THREE.Mesh(geometry, material);
-            scene.add(mesh);
-          });
+      // Create a light, set its position, and add it to the scene.
+      var light = new THREE.PointLight(0xffffff);
+      light.position.set(-100, 200, 100);
+      scene.add(light);
 
-          // Add OrbitControls so that we can pan around with the mouse.
-          controls = new THREE.OrbitControls(camera, renderer.domElement);
+      // Load in the mesh and add it to the scene.
+      var loader = new THREE.JSONLoader();
+      loader.load("models/treehouse_logo.js", function (geometry) {
+        var material = new THREE.MeshLambertMaterial({ color: 0x55B663 });
+        mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+      });
 
-        }
+      // Add OrbitControls so that we can pan around with the mouse.
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-        function resizeCanvasToDisplaySize() {
-          const canvas = renderer.domElement;
-          // look up the size the canvas is being displayed
-          const width = canvas.clientWidth;
-          const height = canvas.clientHeight;
+    }
 
-          // adjust displayBuffer size to match
-          if (canvas.width !== width || canvas.height !== height) {
-            // you must pass false here or three.js sadly fights the browser
-            renderer.setSize(width, height, false);
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
+    function resizeCanvasToDisplaySize() {
+      const canvas = renderer.domElement;
+      // look up the size the canvas is being displayed
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
 
-            // update any render target sizes here
-          }
-        }
+      // adjust displayBuffer size to match
+      if (canvas.width !== width || canvas.height !== height) {
+        // you must pass false here or three.js sadly fights the browser
+        renderer.setSize(width, height, false);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
 
-        // Renders the scene and updates the render as needed.
-        function animate() {
+        // update any render target sizes here
+      }
+    }
 
-          // Read more about requestAnimationFrame at http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
-          requestAnimationFrame(animate);
-          resizeCanvasToDisplaySize();
+    // Renders the scene and updates the render as needed.
+    function animate() {
 
-          // Render the scene.
-          renderer.render(scene, camera);
-          controls.update();
+      // Read more about requestAnimationFrame at http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+      requestAnimationFrame(animate);
+      resizeCanvasToDisplaySize();
 
-        }
+      // Render the scene.
+      renderer.render(scene, camera);
+      controls.update();
 
-      </script>
+    }
+
+  </script>
 
 
 
-  </body>
+</body>
+
 </html>
