@@ -20,10 +20,10 @@ var cur_color = 0;
 var rows;
 var cols;
 var grid;
-// let img;
-// function preload() {
-//   img = loadImage('https://firebasestorage.googleapis.com/v0/b/navtiles-bccb4.appspot.com/o/default_floorpan.jpeg?alt=media&token=6c871212-b3da-4859-bbb9-14e4abcc2913');
-// }
+let img;
+function preload() {
+  img = loadImage('default_floorplan.jpeg');
+}
 
 function setup() {
   createCanvas(400, 400);
