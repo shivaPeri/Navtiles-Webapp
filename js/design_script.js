@@ -21,9 +21,9 @@ var rows;
 var cols;
 var grid;
 let img;
-function preload() {
-  img = loadImage('default_floorplan.jpeg');
-}
+// function preload() {
+//   img = loadImage('default_floorplan.jpeg');
+// }
 
 function setup() {
   createCanvas(400, 400);
