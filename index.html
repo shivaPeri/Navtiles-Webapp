@@ -22,7 +22,7 @@
   </style>
   
   <script src="./js/p5.min.js"></script>
-  <script src="./js/design_script.js"></script>
+  <script src="./js/design_script.js" data-processing-target="processing-canvas"></script>
 
 </head>
 
@@ -46,108 +46,7 @@
         src="https://firebasestorage.googleapis.com/v0/b/navtiles-bccb4.appspot.com/o/default_floorpan.jpeg?alt=media&token=6c871212-b3da-4859-bbb9-14e4abcc2913"
         alt="default floor plan" width=500>
       <br>
-
-      <button id="myBtn">Try it</button>
-      <script>
-        document.getElementById("myBtn").addEventListener("click", function () {
-          keyPressed(event);
-        });
-      </script>
-
-      <script type="application/processing" data-processing-target="processing-canvas">
-    int[][] grid;
-    int rows;
-    int cols;
-    int sq_len = 20;
-    color[] tile_color = new color[5];
-    int cur_color = 0;
-    PImage img;
-
-    void setup(){
-     size(800, 400);
-     background(255);
-     rows = height/sq_len;
-     cols = width/sq_len;
-     grid = new int[cols][rows];
-     grid[1][0] = 1;
-     tile_color[0] = color(235, 64, 52); // red
-     tile_color[1] = color(255, 221, 28); // yellow
-     tile_color[2] = color(142, 235, 49); // green
-     tile_color[3] = color(4, 214, 200); // blue
-     tile_color[4] = color(199, 135, 255); //violet
-     img = loadImage("https://firebasestorage.googleapis.com/v0/b/navtiles-bccb4.appspot.com/o/default_floorpan.jpeg?alt=media&token=6c871212-b3da-4859-bbb9-14e4abcc2913", "jpeg");
-    }
-
-    void draw_grid(){
-      for (int i = 0; i < rows; i++){
-        stroke(245);
-        line(0, (i+1)*sq_len, width, (i+1)*sq_len);
-      }
-      for (int i = 0; i < cols; i++){
-        stroke(245);
-        line((i+1)*sq_len, 0, (i+1)*sq_len, height);
-      }
-      for (int r = 0; r < rows; r++){
-        for (int c = 0; c < cols; c++){
-          if (grid[c][r] != 0) {
-            fill(tile_color[grid[c][r] -1]);
-            rect(c * sq_len, r * sq_len, sq_len, sq_len);
-          }
-        }
-      }
-    }
-
-    int get_pos(int a){
-      return floor(a / sq_len) * sq_len;
-    }
-
-    void draw_cursor(){
-      fill(tile_color[cur_color]);
-      noStroke();
-      rect(get_pos(mouseX), get_pos(mouseY), sq_len, sq_len);
-    }
-
-    void mouseClicked(){
-      int row = get_pos(mouseX) / sq_len;
-      int col = get_pos(mouseY) / sq_len;
-      if (grid[row][col] == 0){
-        grid[row][col] = cur_color + 1;
-      }
-      else{
-        grid[row][col] = 0;
-      }
-    }
-
-    void keyPressed(){
-      if (keyCode == LEFT && sq_len > 2){
-        sq_len--;
-        rows = height/sq_len;
-        cols = width/sq_len;
-        grid = new int[cols][rows];
-      }
-      else if (keyCode == RIGHT){
-        sq_len++;
-        rows = height/sq_len;
-        cols = width/sq_len;
-        grid = new int[cols][rows];
-      }
-
-      if (keyCode == UP){
-        cur_color++;
-        cur_color %= 5;
-      }
-
-    }
-
-    void draw(){
-     background(255);
-     image(img, 0, 0);
-     draw_grid();
-     draw_cursor();
-
-    }
-
-  		</script>
+      
     </div>
     <div class="column">
       <div class="container">
