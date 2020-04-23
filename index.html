@@ -9,11 +9,17 @@
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 
-  <script src="./js/three.min.js"></script>
-  <script src="./js/OrbitControls.js"></script>
+  <!-- <script src="./js/three.min.js"></script> -->
+  <!-- <script src="./js/OrbitControls.js"></script> -->
 
   <script src="./js/p5.min.js"></script>
-  <script type="module" src="./js/preview_script.js"></script>
+  <!-- <script type="module" src="./js/preview_script.js"></script> -->
+
+  <style>
+    p.tab {
+      margin-left: 30px;
+    }
+  </style>
 
 </head>
 
@@ -21,7 +27,7 @@
 
   <center>
   <br>
-  <h1> Navtiles Design Webapp </h1>
+  <h1> NavTiles Design Webapp </h1>
 
   <img
     src="https://firebasestorage.googleapis.com/v0/b/navtiles-bccb4.appspot.com/o/tile_previews%2Fbump_pattern.png?alt=media&token=f0e422c5-00ff-42e4-91df-455ff3924603"
@@ -50,6 +56,11 @@
     alt="default floor plan" width=500
     id="default_floorpan" style="display:none">
   </center>
+
+  <p class="tab">KEYBOARD SHORTCUTS: <br>
+  left/right arrows --> edit tile scale <br>
+  up arrow --> change tile type <br>
+  </p>
 
   <script src="./js/design_script.js"></script>
 
