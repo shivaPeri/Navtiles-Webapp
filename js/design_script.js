@@ -15,7 +15,7 @@ function createArray(rows, cols) {
 //
 
 var x = 50;
-var y = 200;
+var y = 250;
 var sq_len = 20;
 var tile_color = createArray(5);
 var tile_images = createArray(5);
