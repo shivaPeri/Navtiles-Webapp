@@ -9,17 +9,7 @@
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 
-  <!-- <script src="./js/three.min.js"></script> -->
-  <!-- <script src="./js/OrbitControls.js"></script> -->
-
   <script src="./js/p5.min.js"></script>
-  <!-- <script type="module" src="./js/preview_script.js"></script> -->
-
-  <style>
-    p.tab {
-      margin-left: 30px;
-    }
-  </style>
 
 </head>
 
@@ -54,18 +44,15 @@
     <a href="./NavTiles_Files.zip">Download STL Files</a>
   </center>
 
-  <!-- insert default image here  -->
-  <img
-    src="./images/default_floorpan.jpeg"
-    alt="default floor plan" width=500
-    id="default_floorpan" style="display:none">
-
   <script src="./js/design_script.js"></script>
 
-  <!--
-  document.getElementById('vs_iframe').contentWindow.postMessage({msg_type:'load', url:'<your url here>'}, '*');
-  <iframe id="vs_iframe" src="https://www.viewstl.com/?embedded&color=white&bgcolor=white&url=.%2Fstl_files%2Farrow.stl" style="border:0;margin:0;width:100%;height:100%;"></iframe>
--->
+  <!-- <iframe id="vs_iframe" src="https://www.viewstl.com/?embedded" style="border:0;margin:0;width:400px;height:400px;"></iframe>
+  <script>
+  document.getElementById('vs_iframe').onload=function()
+    {
+      document.getElementById('vs_iframe').contentWindow.postMessage({msg_type:'load', local_url:'stl_files/Arrow.stl'}, '*');
+    }
+  </script> -->
 
 </body>
 
