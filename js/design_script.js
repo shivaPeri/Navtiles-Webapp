@@ -22,14 +22,12 @@ var tile_images = createArray(5);
 var p_height = 50;
 var tile_previews = createArray(5);
 var cur_color = 0;
-var rows;
-var cols;
-var grid;
-var img;
+var rows, cols, grid;
+let img, new_img, canvas, upload;
 
 function setup() {
-  let img = createImg("./images/default_floorpan.jpeg");
-  let canvas = createCanvas(600, 400);
+  img = createImg("./images/default_floorpan.jpeg");
+  canvas = createCanvas(600, 400);
 
   rows = Math.floor(height / sq_len);
   cols = Math.floor(width / sq_len);
@@ -45,46 +43,32 @@ function setup() {
   tile_images[0].position(x + width, y);
   tile_images[0].size(AUTO, height);
   //tile_images[0].hide();
-  tile_previews[0] = createImg("./images/bump_pattern.png");
-  tile_previews[0].size(AUTO, p_height);
-  tile_previews[0].hide();
 
   tile_images[1] = createImg("./images/raised_bars.png");
   tile_images[1].id("bars");
   tile_images[1].position(x + width, y);
   tile_images[1].size(AUTO, height);
   tile_images[1].hide();
-  tile_previews[1] = createImg("./images/raised_bars.png");
-  tile_previews[1].size(AUTO, p_height);
-  tile_previews[1].hide();
 
   tile_images[2] = createImg("./images/question_mark.png");
   tile_images[2].id("question");
   tile_images[2].position(x + width, y);
   tile_images[2].size(AUTO, height);
   tile_images[2].hide();
-  tile_previews[2] = createImg("./images/question_mark.png");
-  tile_previews[2].size(AUTO, p_height);
-  tile_previews[2].hide();
 
   tile_images[3] = createImg("./images/arrow_1.png");
   tile_images[3].id("arrow_1");
   tile_images[3].position(x + width, y);
   tile_images[3].size(AUTO, height);
   tile_images[3].hide();
-  tile_previews[3] = createImg("./images/arrow_1.png");
-  tile_previews[3].size(AUTO, p_height);
-  tile_previews[3].hide();
 
   tile_images[4] = createImg("./images/arrow_2.png");
   tile_images[4].id("arrow_2");
   tile_images[4].position(x + width, y);
   tile_images[4].size(AUTO, height);
   tile_images[4].hide();
-  tile_previews[4] = createImg("./images/arrow_2.png");
-  tile_previews[4].size(AUTO, p_height);
-  tile_previews[4].hide();
 
+  createPreviews();
   canvas.position(x,y);
 
   img.position(x,y);
@@ -93,13 +77,50 @@ function setup() {
   let x_off = 0;
   let text_1 = createDiv("KEYBOARD SHORTCUTS:");
   text_1.position(x + x_off, y+height + 20);
-  let text_2 = createDiv("left/right arrows --> edit tile scale");
+  let text_2 = createDiv("left/right arrows --> edit tile scale (also clears grid)");
   text_2.position(x + x_off, y+height + 40);
   let text_3 = createDiv("up/down arrows --> change tile type");
   text_3.position(x + x_off, y+height + 60);
 
-  // let upload = createInput('');
-  // upload.input();
+  upload = createFileInput(handleFile);
+  upload.position(x, y- 50);
+}
+
+function createPreviews(){
+  tile_previews[0] = createImg("./images/bump_pattern.png");
+  tile_previews[0].size(AUTO, p_height);
+  tile_previews[0].hide();
+
+  tile_previews[1] = createImg("./images/raised_bars.png");
+  tile_previews[1].size(AUTO, p_height);
+  tile_previews[1].hide();
+
+  tile_previews[2] = createImg("./images/question_mark.png");
+  tile_previews[2].size(AUTO, p_height);
+  tile_previews[2].hide();
+
+  tile_previews[3] = createImg("./images/arrow_1.png");
+  tile_previews[3].size(AUTO, p_height);
+  tile_previews[3].hide();
+
+  tile_previews[4] = createImg("./images/arrow_2.png");
+  tile_previews[4].size(AUTO, p_height);
+  tile_previews[4].hide();
+}
+
+function handleFile(file) {
+  print(file);
+  if (file.type === 'image') {
+    new_img = createImg(file.data, '');
+    new_img.position(x,y);
+    new_img.size(width,height);
+    img = new_img;
+    canvas = createCanvas(600, 400);
+    grid = createArray(cols, rows);
+    createPreviews();
+  } else {
+    new_img = null;
+  }
 }
 
 function draw_grid() {
@@ -205,7 +226,8 @@ function draw() {
   draw_grid();
   draw_cursor();
   noFill();
-  stroke(tile_color[cur_color]);
+  //stroke(tile_color[cur_color]);
+  stroke(0);
   strokeWeight(5);
   rect(0,0,width, height);
 }
