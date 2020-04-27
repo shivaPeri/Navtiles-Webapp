@@ -1,5 +1,6 @@
 // design_script.js
-// modified from https://stackoverflow.com/questions/966225/how-can-i-create-a-two-dimensional-array-in-javascript/966938#966938
+
+// createArray modified from https://stackoverflow.com/questions/966225/how-can-i-create-a-two-dimensional-array-in-javascript/966938#966938
 function createArray(rows, cols) {
   var x = new Array(rows);
 
@@ -11,7 +12,6 @@ function createArray(rows, cols) {
   }
   return x;
 }
-
 //
 
 var x = 100;
@@ -19,15 +19,37 @@ var y = 200;
 var sq_len = 20;
 var tile_color = createArray(5);
 var tile_images = createArray(5);
+var tile_default_message = createArray(5);
+var tile_messages = {};
 var p_height = 50;
 var tile_previews = createArray(5);
 var cur_color = 0;
 var rows, cols, grid;
 let img, new_img, canvas, upload;
+let voice = new p5.Speech();
+let inp, message;
+var edit_mode = false;
+var toggle_sound = true;
+var cursor_row = 0;
+var cursor_col = 0;
 
 function setup() {
   img = createImg("./images/default_floorpan.jpeg");
   canvas = createCanvas(600, 400);
+
+  inp = createInput();
+  inp.position(x + width, y + height);
+  inp.input(handleInput);
+  inp.hide();
+  //save = createButton('Save changes');
+  message = createDiv('Tile Message: ');
+  message.position(x + width, y + height + 5);
+
+  tile_default_message[0] = 'CAUTION';
+  tile_default_message[1] = 'FOLLOW';
+  tile_default_message[2] = 'HELP';
+  tile_default_message[3] = 'TURN';
+  tile_default_message[4] = 'FORWARD';
 
   rows = Math.floor(height / sq_len);
   cols = Math.floor(width / sq_len);
@@ -74,16 +96,23 @@ function setup() {
   img.position(x,y);
   img.size(width,height);
 
+  helpInfo();
+  upload = createFileInput(handleFile);
+  upload.position(x, y- 50);
+}
+
+function helpInfo(){
   let x_off = 0;
   let text_1 = createDiv("KEYBOARD SHORTCUTS:");
   text_1.position(x + x_off, y+height + 20);
-  let text_2 = createDiv("left/right arrows --> edit tile scale (also clears grid)");
+  let text_2 = createDiv("LEFT/RIGHT arrows --> edit tile scale (also clears grid)");
   text_2.position(x + x_off, y+height + 40);
-  let text_3 = createDiv("up/down arrows --> change tile type");
+  let text_3 = createDiv("UP/DOWN arrows --> change tile type");
   text_3.position(x + x_off, y+height + 60);
-
-  upload = createFileInput(handleFile);
-  upload.position(x, y- 50);
+  let text_4 = createDiv("SHIFT --> toggle edit mode*");
+  text_4.position(x + x_off, y+height + 80);
+  let text_5 = createDiv("*in edit mode, arrow keys edit cursor postion");
+  text_5.position(x + x_off, y+height + 100);
 }
 
 function createPreviews(){
@@ -123,6 +152,11 @@ function handleFile(file) {
   }
 }
 
+function handleInput(){
+  var key = toKey(cursor_row, cursor_col);
+  tile_messages[key] = inp.value();
+}
+
 function draw_grid() {
   for (let i = 0; i < rows; i++) {
     stroke(245);
@@ -160,11 +194,14 @@ function showPreview(){
       var y_pos = y + get_pos(mouseY) - p_height;
       tile_previews[grid[row][col]-1].position(x_pos, y_pos);
       tile_previews[grid[row][col]-1].show();
+      var key = toKey(row, col);
+      message.html(concat('Tile Message: ', tile_messages[key]));
     }
     else {
       for (let i = 0; i < 5; i++){
         tile_previews[i].hide();
       }
+      message.html('Tile Message: ');
     }
   }
 }
@@ -173,61 +210,119 @@ function draw_cursor() {
   stroke(tile_color[cur_color]);
   noFill();
   rect(get_pos(mouseX), get_pos(mouseY), sq_len, sq_len);
-
   showPreview();
+
+  var row = Math.floor(get_pos(mouseX) / sq_len);
+  var col = Math.floor(get_pos(mouseY) / sq_len);
+  var key = toKey(row, col);
+  if (tile_messages[key] != undefined) voice.speak(tile_messages[key]);
+  else voice.stop();
+}
+
+function toKey(row, col){
+  return concat(concat(str(row), ','), str(col));
+}
+
+function draw_edit_mode(){
+  stroke(0);
+  noFill();
+  strokeWeight(3);
+  rect(cursor_row * sq_len, cursor_col * sq_len, sq_len, sq_len);
 }
 
 function changeColor() {
   var row = Math.floor(get_pos(mouseX) / sq_len);
   var col = Math.floor(get_pos(mouseY) / sq_len);
-  if (grid[row][col] == 0) {
+  var key = toKey(row, col);
+  if (grid[row][col] != cur_color + 1) {
     grid[row][col] = cur_color + 1;
-  } else {
+    tile_messages[key] = tile_default_message[cur_color];
+  }
+  else {
     grid[row][col] = 0;
+    delete(tile_messages[key]);
+    clear();
   }
 }
 
-function mouseClicked(){changeColor();}
-
-//function mouseDragged(){changeColor();}
+function mouseClicked(){
+  if (!edit_mode) changeColor();
+  //print(tile_messages);
+}
 
 function keyPressed() {
-  if (keyCode === LEFT_ARROW && sq_len > 2) {
-    sq_len--;
-    rows = Math.floor(height / sq_len);
-    cols = Math.floor(width / sq_len);
-    grid = createArray(cols, rows);
+  if (keyCode == SHIFT) {
+    if (edit_mode){
+      inp.hide();
+      message.show();
+    }
+    else {
+      inp.show();
+      message.hide();
+    }
+    edit_mode = !edit_mode;
     clear();
-  } else if (keyCode === RIGHT_ARROW) {
-    sq_len++;
-    rows = Math.floor(height / sq_len);
-    cols = Math.floor(width / sq_len);
-    grid = createArray(cols, rows);
+  }
+  if (!edit_mode){
+    if (keyCode === LEFT_ARROW && sq_len > 2) {
+      sq_len--;
+      rows = Math.floor(height / sq_len);
+      cols = Math.floor(width / sq_len);
+      grid = createArray(cols, rows);
+      clear();
+    } else if (keyCode === RIGHT_ARROW) {
+      sq_len++;
+      rows = Math.floor(height / sq_len);
+      cols = Math.floor(width / sq_len);
+      grid = createArray(cols, rows);
+      clear();
+    }
+
+    if (keyCode === UP_ARROW) {
+      tile_images[cur_color].hide();
+      cur_color++;
+      cur_color %= 5;
+      tile_images[cur_color].show();
+    }
+    if (keyCode === DOWN_ARROW) {
+      tile_images[cur_color].hide();
+      if (cur_color == 0) {cur_color = 4;}
+      else{cur_color--;}
+      cur_color %= 5;
+      tile_images[cur_color].show();
+    }
+  }
+  else {
+    var k = toKey(cursor_row, cursor_col);
+    if (tile_messages[key] != undefined) inp.value(tile_messages[key]);
+
     clear();
+    if (keyCode === LEFT_ARROW && cursor_row > 0) {
+      cursor_row--;
+    }
+    if (keyCode === RIGHT_ARROW && cursor_row < cols-1) {
+      cursor_row++;
+    }
+    if (keyCode === UP_ARROW && cursor_col > 0) {
+      cursor_col--;
+    }
+    if (keyCode === DOWN_ARROW && cursor_col < rows-1) {
+      cursor_col++;
+    }
   }
-
-  if (keyCode === UP_ARROW) {
-    tile_images[cur_color].hide();
-    cur_color++;
-    cur_color %= 5;
-    tile_images[cur_color].show();
-  }
-  if (keyCode === DOWN_ARROW) {
-    tile_images[cur_color].hide();
-    if (cur_color == 0) {cur_color = 4;}
-    else{cur_color--;}
-    cur_color %= 5;
-    tile_images[cur_color].show();
-  }
-
 }
 
 function draw() {
   draw_grid();
-  draw_cursor();
+  if (!edit_mode){
+    draw_cursor();
+    stroke(0);
+  }
+  else {
+    draw_edit_mode();
+    stroke(255, 0, 0);
+  }
   noFill();
-  //stroke(tile_color[cur_color]);
-  stroke(0);
   strokeWeight(5);
   rect(0,0,width, height);
 }
