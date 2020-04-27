@@ -293,9 +293,6 @@ function keyPressed() {
     }
   }
   else {
-    var k = toKey(cursor_row, cursor_col);
-    if (tile_messages[key] != undefined) inp.value(tile_messages[key]);
-
     clear();
     if (keyCode === LEFT_ARROW && cursor_row > 0) {
       cursor_row--;
@@ -309,6 +306,9 @@ function keyPressed() {
     if (keyCode === DOWN_ARROW && cursor_col < rows-1) {
       cursor_col++;
     }
+    var k = toKey(cursor_row, cursor_col);
+    if (tile_messages[k] != undefined) inp.value(tile_messages[k]);
+    else inp.value('');
   }
 }
 
