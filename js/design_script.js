@@ -109,7 +109,7 @@ function helpInfo(){
   text_2.position(x + x_off, y+height + 40);
   let text_3 = createDiv("UP/DOWN arrows --> change tile type");
   text_3.position(x + x_off, y+height + 60);
-  let text_4 = createDiv("SHIFT --> toggle edit mode*");
+  let text_4 = createDiv("ESCAPE --> toggle edit mode*");
   text_4.position(x + x_off, y+height + 80);
   let text_5 = createDiv("*in edit mode, arrow keys edit cursor postion");
   text_5.position(x + x_off, y+height + 100);
@@ -251,7 +251,7 @@ function mouseClicked(){
 }
 
 function keyPressed() {
-  if (keyCode == SHIFT) {
+  if (keyCode == ESCAPE) {
     if (edit_mode){
       inp.hide();
       message.show();
