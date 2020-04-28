@@ -32,7 +32,7 @@ var edit_mode = false;
 // interface
 let scale, clear_btn, tile_type, submit;
 let img, new_img, canvas, upload;
-let voice = new p5.Speech();
+let voice = new p5.Speech('Google UK English Female');
 let inp, message;
 var cursor_row = 0;
 var cursor_col = 0;
