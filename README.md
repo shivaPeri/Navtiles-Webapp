@@ -1,4 +1,4 @@
-# Navtiles-Webapp
+# Navigation Tiles Design Webapp
 
 Design interface for creating interactive navigation tiles. 
 
